@@ -10,6 +10,7 @@ import (
 var BaseModelMapping = map[string]string{
 	"GLM-4.5":      "0727-360B-API",
 	"GLM-4.6":      "GLM-4-6-API-V1",
+	"GLM-4.7":      "glm-4.7",
 	"GLM-4.5-V":    "glm-4.5v",
 	"GLM-4.6-V":    "glm-4.6v",
 	"GLM-4.5-Air":  "0727-106B-API",
@@ -18,8 +19,10 @@ var BaseModelMapping = map[string]string{
 var ModelList = []string{
 	"GLM-4.5",
 	"GLM-4.6",
+	"GLM-4.7",
 	"GLM-4.5-thinking",
 	"GLM-4.6-thinking",
+	"GLM-4.7-thinking",
 	"GLM-4.5-V",
 	"GLM-4.6-V",
 	"GLM-4.6-V-thinking",
@@ -74,6 +77,7 @@ func IsValidModel(model string) bool {
 	}
 	return false
 }
+
 type ContentPart struct {
 	Type     string    `json:"type"`
 	Text     string    `json:"text,omitempty"`
@@ -89,6 +93,7 @@ type Message struct {
 	Role    string      `json:"role"`
 	Content interface{} `json:"content"` // string 或 []ContentPart
 }
+
 func (m *Message) ParseContent() (text string, imageURLs []string) {
 	_, imageURLs, _ = m.ParseContentFull()
 	text, _, _ = m.ParseContentFull()

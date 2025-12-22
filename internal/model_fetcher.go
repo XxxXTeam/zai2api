@@ -41,6 +41,9 @@ func initBuiltinMappings() {
 		DisplayName:       Cfg.PrimaryModel,
 		UpstreamModelID:   "0727-360B-API",
 		UpstreamModelName: "GLM-4.5",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -49,6 +52,8 @@ func initBuiltinMappings() {
 		UpstreamModelID:   "0727-360B-API",
 		UpstreamModelName: "GLM-4.5-Thinking",
 		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -56,9 +61,10 @@ func initBuiltinMappings() {
 		DisplayName:       Cfg.SearchModel,
 		UpstreamModelID:   "0727-360B-API",
 		UpstreamModelName: "GLM-4.5-Search",
+		EnableThinking:    true,
 		WebSearch:         true,
 		AutoWebSearch:     true,
-		MCPServers:        []string{"deep-web-search"},
+		MCPServers:        []string{"advanced-search", "deep-web-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -66,6 +72,9 @@ func initBuiltinMappings() {
 		DisplayName:       Cfg.AirModel,
 		UpstreamModelID:   "0727-106B-API",
 		UpstreamModelName: "GLM-4.5-Air",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -73,6 +82,9 @@ func initBuiltinMappings() {
 		DisplayName:       Cfg.PrimaryModelNew,
 		UpstreamModelID:   "GLM-4-6-API-V1",
 		UpstreamModelName: "GLM-4.6",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -81,6 +93,8 @@ func initBuiltinMappings() {
 		UpstreamModelID:   "GLM-4-6-API-V1",
 		UpstreamModelName: "GLM-4.6-Thinking",
 		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -88,9 +102,41 @@ func initBuiltinMappings() {
 		DisplayName:       Cfg.SearchModelNew,
 		UpstreamModelID:   "GLM-4-6-API-V1",
 		UpstreamModelName: "GLM-4.6-Search",
+		EnableThinking:    true,
 		WebSearch:         true,
 		AutoWebSearch:     true,
-		MCPServers:        []string{"deep-web-search"},
+		MCPServers:        []string{"advanced-search", "deep-web-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
+	modelMappings["GLM-4.7"] = ModelMapping{
+		DisplayName:       "GLM-4.7",
+		UpstreamModelID:   "glm-4.7",
+		UpstreamModelName: "GLM-4.7",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
+	modelMappings["GLM-4.7-Thinking"] = ModelMapping{
+		DisplayName:       "GLM-4.7-Thinking",
+		UpstreamModelID:   "glm-4.7",
+		UpstreamModelName: "GLM-4.7-Thinking",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
+	modelMappings["GLM-4.7-Search"] = ModelMapping{
+		DisplayName:       "GLM-4.7-Search",
+		UpstreamModelID:   "glm-4.7",
+		UpstreamModelName: "GLM-4.7-Search",
+		EnableThinking:    true,
+		WebSearch:         true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search", "deep-web-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -98,6 +144,9 @@ func initBuiltinMappings() {
 		DisplayName:       "GLM-4.5-V",
 		UpstreamModelID:   "glm-4.5v",
 		UpstreamModelName: "GLM-4.5-V",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -105,7 +154,9 @@ func initBuiltinMappings() {
 		DisplayName:       "GLM-4.6-V",
 		UpstreamModelID:   "glm-4.6v",
 		UpstreamModelName: "GLM-4.6-V",
-		MCPServers:        []string{"vlm-image-search", "vlm-image-recognition", "vlm-image-processing"},
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search", "vlm-image-search", "vlm-image-recognition", "vlm-image-processing"},
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
@@ -178,6 +229,7 @@ var supportedDynamicModelPrefixes = []string{
 	"glm-4-",  // 如 glm-4-xxx
 	"glm-4.5", // 如 glm-4.5-xxx
 	"glm-4.6", // 如 glm-4.6-xxx
+	"glm-4.7", // 如 glm-4.7-xxx
 	"0727-",   // 如 0727-360B-API
 	"0808-",   // 如 0808-360B-DR
 }
@@ -253,6 +305,7 @@ func updateDynamicMappings(models []ZAIModel) {
 var modelsWithSuffixSupport = map[string]bool{
 	"GLM-4.5":     true,
 	"GLM-4.6":     true,
+	"GLM-4.7":     true,
 	"GLM-4.5-V":   true,
 	"GLM-4.6-V":   true,
 	"GLM-4.5-Air": true,

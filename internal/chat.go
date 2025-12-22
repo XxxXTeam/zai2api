@@ -242,10 +242,11 @@ func makeUpstreamRequest(token string, messages []Message, model string, imageUR
 		"signature_prompt": latestUserContent,
 		"params":           map[string]interface{}{},
 		"features": map[string]interface{}{
-			"image_generation": false,
-			"web_search":       autoWebSearch,
+			"image_generation": true,
+			"web_search":       true,
 			"auto_web_search":  autoWebSearch,
 			"preview_mode":     true,
+			"flags":            []string{},
 			"enable_thinking":  enableThinking,
 		},
 		"chat_id": chatID,
