@@ -594,9 +594,13 @@ func FormatImageSearchResults(results []ImageSearchResult) string {
 func ExtractTextBeforeGlmBlock(editContent string) string {
 	if idx := strings.Index(editContent, "<glm_block"); idx != -1 {
 		text := editContent[:idx]
-		if strings.HasSuffix(text, "\n") {
-			text = text[:len(text)-1]
+		// 如果包含 </details>，只取 </details> 之后的内容
+		if detailsIdx := strings.Index(text, "</details>"); detailsIdx != -1 {
+			text = text[detailsIdx+len("</details>"):]
 		}
+		// 去掉开头和结尾的换行
+		text = strings.TrimPrefix(text, "\n")
+		text = strings.TrimSuffix(text, "\n")
 		return text
 	}
 	return ""

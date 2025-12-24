@@ -129,16 +129,20 @@ func getToolChoiceInstructions(toolChoice interface{}, toolNames []string) strin
 
 func ProcessMessagesWithTools(messages []Message, tools []Tool, toolChoice interface{}) []Message {
 	if !Cfg.ToolSupport || len(tools) == 0 {
+		LogDebug("[Tools] Tool support disabled or no tools provided")
 		return messages
 	}
 	if tc, ok := toolChoice.(string); ok && tc == "none" {
+		LogDebug("[Tools] Tool choice is 'none', skipping tool processing")
 		return messages
 	}
 
 	toolPrompt := GenerateToolPrompt(tools, toolChoice)
 	if toolPrompt == "" {
+		LogDebug("[Tools] Generated empty tool prompt")
 		return messages
 	}
+	LogDebug("[Tools] Injecting tool prompt for %d tools", len(tools))
 
 	processed := make([]Message, len(messages))
 	copy(processed, messages)

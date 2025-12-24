@@ -120,7 +120,7 @@ func extractAllMediaURLs(messages []Message) (imageURLs, videoURLs []string) {
 	return imageURLs, videoURLs
 }
 
-func makeUpstreamRequest(token string, messages []Message, model string, imageURLs, videoURLs []string) (*http.Response, string, error) {
+func makeUpstreamRequest(token string, messages []Message, model string, imageURLs, videoURLs []string, hasTools bool) (*http.Response, string, error) {
 	payload, err := DecodeJWTPayload(token)
 	if err != nil || payload == nil {
 		return nil, "", fmt.Errorf("invalid token")
@@ -244,8 +244,8 @@ func makeUpstreamRequest(token string, messages []Message, model string, imageUR
 		"features": map[string]interface{}{
 			"image_generation": true,
 			"web_search":       true,
-			"auto_web_search":  autoWebSearch,
-			"preview_mode":     true,
+			"auto_web_search":  autoWebSearch && !hasTools,
+			"preview_mode":     false,
 			"flags":            []string{},
 			"enable_thinking":  enableThinking,
 		},
@@ -370,10 +370,15 @@ type ThinkingFilter struct {
 
 func (f *ThinkingFilter) ProcessThinking(deltaContent string) string {
 	if !f.hasSeenFirstThinking {
-		f.hasSeenFirstThinking = true
-		if idx := strings.Index(deltaContent, "> "); idx != -1 {
-			deltaContent = deltaContent[idx+2:]
+		// 合并缓存和当前内容，查找 "> " 作为思考内容的开始标记
+		combined := f.buffer + deltaContent
+		if idx := strings.Index(combined, "> "); idx != -1 {
+			f.hasSeenFirstThinking = true
+			f.buffer = ""
+			deltaContent = combined[idx+2:]
 		} else {
+			// 没找到开始标记，缓存当前内容继续等待
+			f.buffer = combined
 			return ""
 		}
 	}
@@ -556,7 +561,7 @@ func HandleChatCompletions(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		resp, modelName, err := makeUpstreamRequest(token, messages, req.Model, reqImageURLs, reqVideoURLs)
+		resp, modelName, err := makeUpstreamRequest(token, messages, req.Model, reqImageURLs, reqVideoURLs, len(req.Tools) > 0)
 		if err != nil {
 			LogError("Upstream request failed (attempt %d): %v", attempt+1, err)
 			lastError = err.Error()
@@ -1094,6 +1099,8 @@ func handleNonStreamResponse(w http.ResponseWriter, body io.ReadCloser, completi
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		LogDebug("[Upstream] %s", line)
+
 		if !strings.HasPrefix(line, "data: ") {
 			continue
 		}
@@ -1723,6 +1730,8 @@ func handleNonStreamResponseWithRetry(w http.ResponseWriter, body io.ReadCloser,
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		LogDebug("[Upstream] %s", line)
+
 		if !strings.HasPrefix(line, "data: ") {
 			continue
 		}
