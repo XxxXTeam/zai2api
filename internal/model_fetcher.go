@@ -160,6 +160,37 @@ func initBuiltinMappings() {
 		OwnedBy:           "z.ai",
 		IsBuiltin:         true,
 	}
+		modelMappings["GLM-5"] = ModelMapping{
+		DisplayName:       "GLM-5",
+		UpstreamModelID:   "glm-5",
+		UpstreamModelName: "GLM-5",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
+	modelMappings["GLM-5-Thinking"] = ModelMapping{
+		DisplayName:       "GLM-5-Thinking",
+		UpstreamModelID:   "glm-5",
+		UpstreamModelName: "GLM-5-Thinking",
+		EnableThinking:    true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
+	modelMappings["GLM-5-Search"] = ModelMapping{
+		DisplayName:       "GLM-5-Search",
+		UpstreamModelID:   "glm-5",
+		UpstreamModelName: "GLM-5-Search",
+		EnableThinking:    true,
+		WebSearch:         true,
+		AutoWebSearch:     true,
+		MCPServers:        []string{"advanced-search", "deep-web-search"},
+		OwnedBy:           "z.ai",
+		IsBuiltin:         true,
+	}
 }
 func GetModelMapping(modelID string) (ModelMapping, bool) {
 	baseModel, enableThinking, enableSearch := ParseModelName(modelID)

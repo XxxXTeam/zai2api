@@ -8,6 +8,7 @@ import (
 )
 
 var BaseModelMapping = map[string]string{
+	"GLM-5":      "glm-5",
 	"GLM-4.5":      "0727-360B-API",
 	"GLM-4.6":      "GLM-4-6-API-V1",
 	"GLM-4.7":      "glm-4.7",
@@ -20,6 +21,7 @@ var ModelList = []string{
 	"GLM-4.5",
 	"GLM-4.6",
 	"GLM-4.7",
+	"GLM-5",
 	"GLM-4.5-thinking",
 	"GLM-4.6-thinking",
 	"GLM-4.7-thinking",
