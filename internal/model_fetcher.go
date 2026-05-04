@@ -93,21 +93,21 @@ func initBuiltinMappings() {
 }
 func GetModelMapping(modelID string) (ModelMapping, bool) {
 	baseModel, enableThinking, enableSearch := ParseModelName(modelID)
+
 	mappingsLock.RLock()
 	defer mappingsLock.RUnlock()
+
 	if mapping, ok := modelMappings[baseModel]; ok {
-		if enableThinking {
-			mapping.EnableThinking = true
-		}
-		if enableSearch {
-			mapping.WebSearch = true
-			mapping.AutoWebSearch = true
-		}
+		mapping.EnableThinking = enableThinking
+		mapping.WebSearch = enableSearch
+		mapping.AutoWebSearch = enableSearch
 		return mapping, true
 	}
+
 	if mapping, ok := modelMappings[modelID]; ok {
 		return mapping, true
 	}
+
 	return ModelMapping{}, false
 }
 func GetUpstreamConfig(requestedModel string) *ModelMapping {
