@@ -2,6 +2,8 @@
 
 将 Z.AI 转换为 OpenAI 兼容 API 的代理服务。
 
+> 当前已无法获取游客token,请配合账号使用
+
 [![Build](https://github.com/XxxXTeam/zai2api/actions/workflows/build.yml/badge.svg)](https://github.com/XxxXTeam/zai2api/actions/workflows/build.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
